@@ -45,31 +45,19 @@ jobs:
           name: zipped-bundle
           path: ${{ github.sha }}.zip
 
-  publish:
+  upload:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: create release 
-        id: create-release
-        uses: actions/create-release@v1 
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with: 
-          tag_name: ${{ github.run_number }}
-          release_name: Release from ${{ github.run_number }}
-          body: New realease for ${{ github.sha }}. Release notes on the documentation site 
-          draft: false 
-          prerelease: false 
       - name: download artifact 
         uses: actions/download-artifact@v2 
         with:
           name: zipped-bundle
-      - name: upload release asset 
-        uses: actions/upload-release-asset@v1 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure AWS credentails
+        uses: aws-actions/configure-aws-credentails@v1
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./${{ github.sha }}.zip 
-          asset_name: source_code_with_libraries.zip 
-          asset_content_type: application/zip 
+          role-to-assume: arn:aws:iam::605151010092:role/github-actions-role-s3-lambda 
+          aws-region: ap-southeast-2
+      - name: upload to S3 
+        run: aws s3 cp ${{ github.sha }}.zip s3://ggburton-github-actions-test/${{ github.sha }}.zip
+      
