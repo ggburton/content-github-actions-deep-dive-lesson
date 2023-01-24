@@ -54,7 +54,7 @@ jobs:
         with:
           name: zipped-bundle
       - name: Configure AWS credentails
-        uses: aws-actions/configure-aws-credentails@v1
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::605151010092:role/github-actions-role-s3-lambda 
           aws-region: ap-southeast-2
