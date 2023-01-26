@@ -102,7 +102,7 @@ jobs:
           aws-region: ap-southeast-2
       - run: |
           aws lambda update-function-code \
-            --function-name test-function \
+            --function-name github-actions-function \
             --s3-bucket ggburton-github-actions-test \
             --s3-key ${{ github.sha }}.zip \
             --publish
