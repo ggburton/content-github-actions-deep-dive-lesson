@@ -78,7 +78,7 @@ jobs:
           aws-region: ap-southeast-2
       - name: create test function 
         run: |
-          aws lambda create-function test-function \
+          aws lambda create-function --function-name test-function \
             --code S3Bucket=ggburton-github-actions-test,S3Key=${{ github.sha }}.zip \
             --handler lambda-function.lambda_handler --runtime python3.8 \
             --role arn:aws:iam::605151010092:role/github-actions-role-s3-lambda
