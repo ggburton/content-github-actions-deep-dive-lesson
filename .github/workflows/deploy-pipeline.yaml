@@ -66,6 +66,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write 
+      contents: read
     needs: upload 
     steps:
       - name: Configure AWS credentails
